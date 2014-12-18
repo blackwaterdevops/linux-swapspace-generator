@@ -7,7 +7,7 @@ BLOCK_SIZE="1024";
 echo "Enter the size in MB you want you swapspace partition to be (number only) [512]"
 read SIZE
 
-if [ -z "$SIZE"]
+if [ -z "${SIZE}" ];
     then
         SS=${DEFAULT_SIZE};
     else
@@ -17,7 +17,7 @@ fi
 echo "Enter the path for the swapspace [/swapfile]"
 read SWAPFILE
 
-if [ -z "$SWAPFILE"]
+if [ -z "${SWAPFILE}" ];
     then
         SWAP=${DEFAULT_SWAP};
     else
@@ -33,12 +33,12 @@ function create_swap {
 
     echo "Building swapspace of $(echo $1)MB mounted to $(echo $3)";
 
-    /bin/dd if=/dev/zero of="$(echo $3)" bs="$(echo $2)" count="$(echo $size)"
-    /sbin/mkswap "$(echo $3)"
-    /sbin/swapon "$(echo $3)"
+    /bin/dd if=/dev/zero of="$(echo $file)" bs="$(echo $bs)" count="$(echo $size)"
+    /sbin/mkswap "$(echo $file)"
+    /sbin/swapon "$(echo $file)"
     echo "$file          swap            swap    defaults        0 0" >> /etc/fstab
-    /bin/chown root:root "$(echo $3)"
-    /bin/chmod 0600 "$(echo $3)"
+    /bin/chown root:root "$(echo $file)"
+    /bin/chmod 0600 "$(echo $file)"
     echo "vm.swappiness=10" >> /etc/sysctl.conf
     /sbin/sysctl vm.swappiness=10
 
